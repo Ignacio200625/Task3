@@ -7,11 +7,15 @@ export class StudentCollection{
 
     }
 
+    //It adds  the student into the students group whit a student object
+
     addStudent(student){
 
         this.students.push(student)
 
     }
+
+    //It receives the name and return the student
 
    getStudentByName(nombre){
 
@@ -25,6 +29,8 @@ export class StudentCollection{
 
        return false
     }
+
+    //it receives a name and delete the student by other function
 
     removeStudentByName(name){
 
@@ -42,6 +48,8 @@ export class StudentCollection{
 
     }
 
+//Pass the name and the new grades for the student
+
     updateGrades(nombre,newgrades){
 
          for(let student of this.students){
@@ -55,7 +63,10 @@ export class StudentCollection{
        }
 
     }
- caclculateMedia(nombre){
+
+    //return the average grade with a name 
+
+    caclculateMedia(nombre){
 
         let contador=0
 
@@ -81,6 +92,8 @@ export class StudentCollection{
 
     }
 
+    //Returns all the enrolled students
+
     returnEnrolledStudents(){
 
         let enrrolled=[]
@@ -96,6 +109,8 @@ export class StudentCollection{
         return enrrolled
 
     }
+
+    //It returns the students with an age above the parameter introduced
 
     returnStudentsAboveAge(age){
 
@@ -115,6 +130,8 @@ export class StudentCollection{
 
     }
 
+    //It returns the best average of grades
+
     returnBestAverage(){
         
         let best=0
@@ -133,11 +150,15 @@ export class StudentCollection{
 
     }
 
+    
+
     getStudentSummaries(){
 
         let sumary=[]
 
          for(let student of this.students){
+
+            //It returns the summary of each student 
 
             sumary.push(student)
 
@@ -157,6 +178,8 @@ export class StudentCollection{
 
     }
 
+    //Returns the names of the enrolled students
+
     getEnrroledStudentsNames(){
 
         let names=[]
@@ -175,6 +198,8 @@ export class StudentCollection{
 
     }
 
+    //Return the format grades like an array of string
+
     formatGrades(){
 
         let formatGrades=[]
@@ -189,6 +214,8 @@ export class StudentCollection{
 
     }
 
+    //Return all the students with an average over nine
+
     getHonorRollStudents(){
 
         const grades=this.students.filter(s=>this.caclculateMedia(s.name)>9
@@ -199,16 +226,19 @@ export class StudentCollection{
 
     }
 
+    //Return a JSON of all the students
+
      serializeStudents() {
     return JSON.stringify(this.students);
-  }
+    }
 
+    //Return a JSON converted to sstring
 
-  deserializeStudents(jsonString) {
-    jsonString=this.serializeStudents()
-    this.students = JSON.parse(jsonString);
-    return this.students
-  }
+    deserializeStudents(jsonString) {
+        jsonString=this.serializeStudents()
+        this.students = JSON.parse(jsonString);
+        return this.students
+    }
 
 
 }

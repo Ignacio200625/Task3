@@ -1,1 +1,1 @@
-console.log(studentCollection.deserializeStudents(array))
+console.log(studentCollection.deserializeStudents())

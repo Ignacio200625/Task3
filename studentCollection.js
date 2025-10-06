@@ -1,4 +1,4 @@
-class StudentCollection{
+export class StudentCollection{
   
 
     constructor(students){
@@ -13,9 +13,9 @@ class StudentCollection{
 
     }
 
-    static returnStudentByName(nombre){
+   getStudentByName(nombre){
 
-        for(let student of students){
+        for(let student of this.students){
 
             if(student.name==nombre)
 
@@ -28,7 +28,7 @@ class StudentCollection{
 
     removeStudentByName(name){
 
-       for(let student in this.students){
+       for(let student of this.students){
 
             if(student===this.returnStudentByName(name)) {
 
@@ -46,7 +46,7 @@ class StudentCollection{
 
          for(let student of this.students){
 
-            if(student===StudentCollection.returnStudentByName(nombre)) {
+            if(student===this.returnStudentByName(nombre)) {
 
                 student.grades=newgrades
 
@@ -55,16 +55,15 @@ class StudentCollection{
        }
 
     }
-
-    static caclculateMedia(nombre){
+ caclculateMedia(nombre){
 
         let contador=0
 
         let suma=0
 
-         for(let student of students){
+         for(let student of this.students){
 
-            if(student===StudentCollection.returnStudentByName(nombre)) {
+            if(student===this.returnStudentByName(nombre)) {
 
                 for(let i=0;i<student.grades.length;i++){
 
@@ -86,15 +85,13 @@ class StudentCollection{
 
         let enrrolled=[]
 
-         for(let student of students){
+         const top=this.students.filter(
 
-           if(student.enrrolled==true){
+            s=>s.enrrolled===true
 
-            enrrolled.push(student)
+         )
 
-           }
-        
-        }
+         enrrolled=top
 
         return enrrolled
 
@@ -104,7 +101,7 @@ class StudentCollection{
 
         let estudiantes=[]
 
-         for(let student of students){
+         for(let student of this.students){
 
            if(student.edad>age){
 
@@ -122,11 +119,11 @@ class StudentCollection{
         
         let best=0
 
-        for(let student of students){
+        for(let student of this.students){
 
-            if(StudentCollection.caclculateMedia(student.name)>best){
+            if(this.caclculateMedia(student.name)>best){
 
-                best=StudentCollection.caclculateMedia(student.name)
+                best=this.caclculateMedia(student.name)
 
             }
 
@@ -140,7 +137,7 @@ class StudentCollection{
 
         let sumary=[]
 
-         for(let student of students){
+         for(let student of this.students){
 
             sumary.push(student)
 
@@ -152,21 +149,19 @@ class StudentCollection{
 
     getTopStudents(treshold){
 
-        const top=students.filter(
-            s=>StudentCollection.caclculateMedia(s.name)>treshold
+        const top=this.students.filter(
+            s=>this.caclculateMedia(s.name)>treshold
         )
 
         return top
 
     }
 
-    getEnrroledStudents(studentCollection){
+    getEnrroledStudentsNames(){
 
         let names=[]
         
-        const top=studentCollection.returnEnrolledStudents().filter(
-            s=>(studentCollection.returnEnrolledStudents())
-        )
+        const top=this.returnEnrolledStudents()
 
         let studentCollection2=top
 
@@ -180,11 +175,11 @@ class StudentCollection{
 
     }
 
-    returnFormatGrades(){
+    formatGrades(){
 
         let formatGrades=[]
         
-        for(let student of students){
+        for(let student of this.students){
 
             formatGrades.push(`${student.name}: ${student.grades}`)
 
@@ -196,7 +191,7 @@ class StudentCollection{
 
     getHonorRollStudents(){
 
-        const grades=students.filter(s=>StudentCollection.caclculateMedia(s.name)>9
+        const grades=this.students.filter(s=>this.caclculateMedia(s.name)>9
             
         )
 
@@ -210,13 +205,15 @@ class StudentCollection{
 
 
   deserializeStudents(jsonString) {
+    jsonString=this.serializeStudents()
     this.students = JSON.parse(jsonString);
+    return this.students
   }
 
 
 }
 
-class Student{
+export class Student{
 
     constructor(name,grades,edad,enrrolled){
         this.name=name
@@ -228,46 +225,5 @@ class Student{
     
 
 }
-
-let student= new Student("Nacho",[7,10,9,9],19,true)
-let student2= new Student("Alejandro",[2,3,4,0],20,true)
-let student3= new Student("Navarro",[6,3,2,7],30,false)
-
-let students=[student,student2,student3]
-
-let studentCollection = new StudentCollection(students)
-
-console.log(StudentCollection.returnStudentByName("Nacho"))
-
-console.log(StudentCollection.caclculateMedia("Alejandro"))
-
-let grades=[10,10,10,10]
-
-studentCollection.updateGrades("Nacho",grades)
-
-console.log(student)
-
-console.log(studentCollection.returnEnrolledStudents())
-
-console.log(studentCollection.returnStudentsAboveAge(140))
-
-console.log(studentCollection.returnBestAverage())
-
-console.log(studentCollection.getStudentSummaries())
-
-console.log(studentCollection.getTopStudents(6))
-
-console.log(studentCollection.getEnrroledStudents(studentCollection))
-
-console.log(studentCollection.returnFormatGrades())
-
-console.log(studentCollection.getHonorRollStudents(studentCollection))
-
-let json = studentCollection.serializeStudents()
-console.log(json)
-
-studentCollection.deserializeStudents(json)
-console.log(studentCollection.students) 
-
 
 

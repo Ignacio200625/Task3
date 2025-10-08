@@ -1,259 +1,182 @@
-export class StudentCollection{
-  
+export class StudentCollection {
+  constructor(students) {
+    this.students = students;
+  }
 
-    constructor(students){
+  //It adds  the student into the students group whit a student object
 
-        this.students=students
+  addStudent(student) {
+    this.students.push(student);
+  }
 
+  //It receives the name and return the student
+
+  getStudentByName(nombre) {
+    for (let student of this.students) {
+      if (student.name == nombre) return student;
     }
 
-    //It adds  the student into the students group whit a student object
+    return false;
+  }
 
-    addStudent(student){
+  //it receives a name and delete the student by other function
 
-        this.students.push(student)
-
+  removeStudentByName(name) {
+    for (let student of this.students) {
+      if (student === this.getStudentByName(name)) {
+        this.students.pop(student);
+      }
     }
+  }
 
-    //It receives the name and return the student
+  //Pass the name and the new grades for the student
 
-   getStudentByName(nombre){
+  updateGrades(nombre, newgrades) {
+    for (let student of this.students) {
+      if (student === this.getStudentByName(nombre)) {
+        student.grades = newgrades;
+      }
+    }
+  }
 
-        for(let student of this.students){
+  //return the average grade with a name
 
-            if(student.name==nombre)
+  caclculateMedia(nombre) {
+    let contador = 0;
 
-           return student
+    let suma = 0;
 
+    for (let student of this.students) {
+      if (student === this.getStudentByName(nombre)) {
+        for (let i = 0; i < student.grades.length; i++) {
+          contador++;
+
+          suma = suma + student.grades[i];
         }
-
-       return false
+      }
     }
 
-    //it receives a name and delete the student by other function
+    return suma / contador;
+  }
 
-    removeStudentByName(name){
+  //Returns all the enrolled students
 
-       for(let student of this.students){
+  returnEnrolledStudents() {
+    let enrrolled = [];
 
-            if(student===this.returnStudentByName(name)) {
+    const top = this.students.filter((s) => s.enrrolled === true);
 
-                this.students.pop(student)
+    enrrolled = top;
 
-            }
+    return enrrolled;
+  }
 
-       }
+  //It returns the students with an age above the parameter introduced
 
-      
+  returnStudentsAboveAge(age) {
+    let estudiantes = [];
 
+    for (let student of this.students) {
+      if (student.edad > age) {
+        estudiantes.push(student);
+      }
     }
 
-//Pass the name and the new grades for the student
+    return estudiantes;
+  }
 
-    updateGrades(nombre,newgrades){
+  //It returns the best average of grades
 
-         for(let student of this.students){
+  returnBestAverage() {
+    let best = 0;
 
-            if(student===this.returnStudentByName(nombre)) {
-
-                student.grades=newgrades
-
-            }
-
-       }
-
+    for (let student of this.students) {
+      if (this.caclculateMedia(student.name) > best) {
+        best = this.caclculateMedia(student.name);
+      }
     }
 
-    //return the average grade with a name 
+    return best;
+  }
 
-    caclculateMedia(nombre){
+  getStudentSummaries() {
+    let sumary = [];
 
-        let contador=0
+    for (let student of this.students) {
+      //It returns the summary of each student
 
-        let suma=0
-
-         for(let student of this.students){
-
-            if(student===this.returnStudentByName(nombre)) {
-
-                for(let i=0;i<student.grades.length;i++){
-
-                    contador++
-
-                    suma=suma+student.grades[i]
-
-                }
-
-            }
-
-       }
-
-       return suma/contador
-
+      sumary.push(student);
     }
 
-    //Returns all the enrolled students
+    return sumary;
+  }
 
-    returnEnrolledStudents(){
+  getTopStudents(treshold) {
+    const top = this.students.filter(
+      (s) => this.caclculateMedia(s.name) > treshold
+    );
 
-        let enrrolled=[]
+    return top;
+  }
 
-         const top=this.students.filter(
+  //Returns the names of the enrolled students
 
-            s=>s.enrrolled===true
+  getEnrroledStudentsNames() {
+    let names = [];
 
-         )
+    const top = this.returnEnrolledStudents();
 
-         enrrolled=top
+    let studentCollection2 = top;
 
-        return enrrolled
-
+    for (let student of studentCollection2) {
+      names.push(student.name);
     }
 
-    //It returns the students with an age above the parameter introduced
+    return names;
+  }
 
-    returnStudentsAboveAge(age){
+  //Return the format grades like an array of string
 
-        let estudiantes=[]
+  formatGrades() {
+    let formatGrades = [];
 
-         for(let student of this.students){
-
-           if(student.edad>age){
-
-            estudiantes.push(student)
-
-           }
-        
-        }
-
-        return estudiantes
-
+    for (let student of this.students) {
+      formatGrades.push(`${student.name}: ${student.grades}`);
     }
 
-    //It returns the best average of grades
+    return formatGrades;
+  }
 
-    returnBestAverage(){
-        
-        let best=0
+  //Return all the students with an average over nine
 
-        for(let student of this.students){
+  getHonorRollStudents() {
+    const grades = this.students.filter(
+      (s) => this.caclculateMedia(s.name) > 9
+    );
 
-            if(this.caclculateMedia(student.name)>best){
+    return grades;
+  }
 
-                best=this.caclculateMedia(student.name)
+  //Return a JSON of all the students
 
-            }
-
-        }
-
-        return best
-
-    }
-
-    
-
-    getStudentSummaries(){
-
-        let sumary=[]
-
-         for(let student of this.students){
-
-            //It returns the summary of each student 
-
-            sumary.push(student)
-
-        }
-
-        return sumary
-
-    }
-
-    getTopStudents(treshold){
-
-        const top=this.students.filter(
-            s=>this.caclculateMedia(s.name)>treshold
-        )
-
-        return top
-
-    }
-
-    //Returns the names of the enrolled students
-
-    getEnrroledStudentsNames(){
-
-        let names=[]
-        
-        const top=this.returnEnrolledStudents()
-
-        let studentCollection2=top
-
-        for(let student of studentCollection2){
-
-            names.push(student.name)
-
-        }
-
-        return names
-
-    }
-
-    //Return the format grades like an array of string
-
-    formatGrades(){
-
-        let formatGrades=[]
-        
-        for(let student of this.students){
-
-            formatGrades.push(`${student.name}: ${student.grades}`)
-
-        }
-
-        return formatGrades
-
-    }
-
-    //Return all the students with an average over nine
-
-    getHonorRollStudents(){
-
-        const grades=this.students.filter(s=>this.caclculateMedia(s.name)>9
-            
-        )
-
-        return grades
-
-    }
-
-    //Return a JSON of all the students
-
-     serializeStudents() {
+  serializeStudents() {
     return JSON.stringify(this.students);
-    }
+  }
 
-    //Return a JSON converted to sstring
+  //Return a JSON converted to sstring
 
-    deserializeStudents(jsonString) {
-        jsonString=this.serializeStudents()
-        this.students = JSON.parse(jsonString);
-        return this.students
-    }
-
-
+  deserializeStudents(jsonString) {
+    jsonString = this.serializeStudents();
+    this.students = JSON.parse(jsonString);
+    return this.students;
+  }
 }
 
-export class Student{
-
-    constructor(name,grades,edad,enrrolled){
-        this.name=name
-        this.grades=grades
-        this.enrrolled=enrrolled
-        this.edad=edad
-    }
-
-    
-
+export class Student {
+  constructor(name, grades, edad, enrrolled) {
+    this.name = name;
+    this.grades = grades;
+    this.enrrolled = enrrolled;
+    this.edad = edad;
+  }
 }
-
-
